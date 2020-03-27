@@ -31,13 +31,15 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
 
-      
+
     - name: Build with Maven
       run: ./build/mvn clean install -DskipTests -T4
 
+    - name: Run unit tests
+      run: mvn -o surefire:test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"
 
-    # Runs a single command using the runners shell
-    - name: Run the jar
-      run: java -jar target/scala-seed-1.0.0-SNAPSHOT.jar
+    - name: Run hbase 1.x tests
+      run: mvn -o surefire:test -pl geomesa-hbase/geomesa-hbase-datastore -Phbase1 -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"
 
-   
+    - name: Run integration tests
+      run: mvn -o failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"
