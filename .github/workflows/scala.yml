@@ -24,7 +24,7 @@ jobs:
           java-version: 1.8
       - name: Build and IT with Maven
         run: mvn clean install -DskipTests -T4 | grep -e 'Building GeoMesa' -e '\(maven-surefire-plugin\|maven-jar-plugin\|scala-maven-plugin.*:compile\)'
-        run: mvn failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"  2>&1  
+        #run: mvn failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"  2>&1  
       - uses: actions/upload-artifact@v1
         with:
           name: build-output
