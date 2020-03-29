@@ -30,11 +30,11 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
-    - name: ensure IT exists
-      run: ls geomesa-accumulo/geomesa-accumulo-datastore/src/test/scala/org/locationtech/geomesa/accumulo/data/
 
     - name: Build with Maven
-      run: mvn clean install -DskipTests -T4 | grep -e 'Building GeoMesa' -e '\(maven-surefire-plugin\|maven-jar-plugin\|scala-maven-plugin.*:compile\)'
+      run: |
+        mvn clean install -DskipTests -T4 | grep -e 'Building GeoMesa' -e '\(maven-surefire-plugin\|maven-jar-plugin\|scala-maven-plugin.*:compile\)'
+        mvn failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"  2>&1 
 
     #- name: Run unit tests
     #  run: mvn -o surefire:test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit" | grep -e 'Building GeoMesa' -e '\(maven-surefire-plugin\|maven-jar-plugin\|scala-maven-plugin.*:compile\)'
@@ -42,5 +42,5 @@ jobs:
     #- name: Run hbase 1.x tests
     #  run: mvn -o surefire:test -pl geomesa-hbase/geomesa-hbase-datastore -Phbase1 -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit" | grep -e 'Building GeoMesa' -e '\(maven-surefire-plugin\|maven-jar-plugin\|scala-maven-plugin.*:compile\)'
 
-    - name: Run integration tests
-      run: mvn -o failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"  2>&1  
+    #- name: Run integration tests
+    #  run: mvn -o failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"  2>&1  
