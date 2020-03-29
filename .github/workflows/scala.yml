@@ -42,4 +42,4 @@ jobs:
     #  run: mvn -o surefire:test -pl geomesa-hbase/geomesa-hbase-datastore -Phbase1 -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit" | grep -e 'Building GeoMesa' -e '\(maven-surefire-plugin\|maven-jar-plugin\|scala-maven-plugin.*:compile\)'
 
     - name: Run integration tests
-      run: mvn -o failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit" | grep -e 'Building GeoMesa' -e '\(maven-surefire-plugin\|maven-jar-plugin\|scala-maven-plugin.*:compile\|maven-failsafe-plugin\)'
+      run: mvn -o failsafe:integration-test -Dtest.fork.count=1 -Dmaven.test.jvmargs="-Xmx4g -XX:-UseGCOverheadLimit"  2>&1  
